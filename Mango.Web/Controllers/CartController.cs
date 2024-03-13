@@ -10,15 +10,44 @@ namespace Mango.Web.Controllers
     public class CartController : Controller
     {
         private readonly IShoppingCartService _shoppingCartService;
-        public CartController(IShoppingCartService shoppingCartService)
+        private readonly IOrderService _orderService;
+        public CartController(IShoppingCartService shoppingCartService, IOrderService orderService)
         {
             _shoppingCartService = shoppingCartService;
+            _orderService = orderService;
         }
         [Authorize]
         public async Task<IActionResult> CartIndex()
         {
 
             return View(await LoadCartToBasedOnLoggedInUser());
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Checkout()
+        {
+
+            return View(await LoadCartToBasedOnLoggedInUser());
+        }
+
+        
+        [HttpPost]
+        [ActionName("CheckOut")]
+        public async Task<IActionResult> Checkout(CartDto cartDto)
+        {
+
+            CartDto cart = await LoadCartToBasedOnLoggedInUser();
+            cart.CartHeader.Phone=cartDto.CartHeader.Phone;
+            cart.CartHeader.Email=cartDto.CartHeader.Email;
+            cart.CartHeader.Name=cartDto.CartHeader.Name;
+
+            var response = await _orderService.CreateOrderAsync(cart);
+            OrderHeaderDto orderHeaderDto = JsonConvert.DeserializeObject<OrderHeaderDto>(Convert.ToString(response.Result));
+            if(response != null && response.isSuccess)
+            {
+                //get stripe session
+            }
+            return View();
         }
 
         public async Task<IActionResult> Remove(int cartDetailsId)
@@ -58,6 +87,21 @@ namespace Mango.Web.Controllers
             }
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> EmailCart(CartDto cartDto)
+        {
+            CartDto cart = await LoadCartToBasedOnLoggedInUser();
+            cart.CartHeader.Email = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Email)?.FirstOrDefault()?.Value;
+            ResponseDto? response = await _shoppingCartService.EmailCart(cart);
+            if (response != null & response.isSuccess)
+            {
+                TempData["success"] = "Email will be processed and sent shortly.";
+                return RedirectToAction(nameof(CartIndex));
+            }
+            return View();
+        }
+
 
         private async Task<CartDto> LoadCartToBasedOnLoggedInUser()
         {

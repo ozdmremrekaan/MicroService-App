@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Mango.Services.EmailAPI.RabbitMQMessageSender;
 using Mango.Services.ShoppingCartAPI.Data;
 using Mango.Services.ShoppingCartAPI.Models;
 using Mango.Services.ShoppingCartAPI.Models.Dto;
@@ -19,11 +20,16 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
         private ResponseDto _response;
         private readonly IProductService _productService;
         private readonly ICouponService _couponService;
+        private readonly IConfiguration _configuration;
+        private readonly IRabbitMQCartMessageSender _messagebus;
 
         public ShoppingCartController(IMapper mapper, AppDbContext appDbContext,
-            IProductService productService, ICouponService couponService)
+            IProductService productService, ICouponService couponService,
+            IRabbitMQCartMessageSender messagebus,IConfiguration configuration)
         {
             _mapper = mapper;
+            _messagebus = messagebus;
+            _configuration = configuration;
             _appDbContext = appDbContext;
             this._response = new ResponseDto();
             _productService = productService;
@@ -80,6 +86,21 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                 _response.isSuccess = false;
             }
 
+            return _response;
+        }
+        [HttpPost("EmailCartRequest")]
+        public async Task<object> EmailCartRequest([FromBody] CartDto cartDto)
+        {
+            try
+            {
+                _messagebus.SendMessage(cartDto, _configuration.GetValue<string>("TopicAndQueueNames:EmailShoppingCartQueue"));
+                _response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                _response.isSuccess = false;
+                _response.Message = ex.ToString();
+            }
             return _response;
         }
 

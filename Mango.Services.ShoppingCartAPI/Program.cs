@@ -1,3 +1,4 @@
+using Mango.Services.EmailAPI.RabbitMQMessageSender;
 using Mango.Services.ShoppingCartAPI.Data;
 using Mango.Services.ShoppingCartAPI.MapperConfig;
 using Mango.Services.ShoppingCartAPI.Service;
@@ -19,6 +20,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(typeof(MapConfig));
 builder.Services.AddScoped<IProductService,ProductService>();
 builder.Services.AddScoped<ICouponService,CouponService>();
+builder.Services.AddScoped<IRabbitMQCartMessageSender, RabbitMQCartMessageSender>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddHttpClient
