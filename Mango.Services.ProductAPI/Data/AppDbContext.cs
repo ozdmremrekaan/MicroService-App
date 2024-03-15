@@ -17,9 +17,9 @@ namespace Mango.Services.ProductAPI.Data
             modelBuilder.Entity<Product>().HasData(new Product
             {
                 ProductId = 1,
-                Name = "Cansuşko Affı",
+                Name = "Turkish Baklava",
                 Price = 15,
-                Description = "Cansuşkonun Kaantoyu affettiği ürün bu ürünü sepetinize eklediğinzde cansuşkonun onaylaması gerek",
+                Description = "Quisque vel lacus ac magna, vehicula sagittis ut non lacus.<br/> Vestibulum arcu turpis, maximus malesuada neque. Phasellus commodo cursus pretium.",
                 ImageUrl = "https://placehold.co/603x403",
                 CategoryName = "Appetizer"
             });

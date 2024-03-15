@@ -1,4 +1,6 @@
 ﻿@model CartDto
+
+ 
 @if (Model.CartDetails != null)
 {
     <form form method="post" asp-action="EmailCart">
@@ -46,7 +48,7 @@
                                 <div style="font-size:11px;">Description</div>
                             </div>
                             <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
-                                <span style="font-size:17px;">@string.Format("{0:c}", cartObj.Product.Price) </span>
+                                <span style="font-size:17px;">@string.Format(System.Globalization.CultureInfo.GetCultureInfo("en-US"),"{0:c}", cartObj.Product.Price) </span>
                             </div>
                             <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
                                 <span style="font-size:17px;"> @cartObj.Count</span>
@@ -76,10 +78,10 @@
                             }
                         </div>
                         <div class="col-6 text-end">
-                            <span class="text-danger" style="font-size:21px;">  Order Total : @string.Format("{0:c}", Model.CartHeader.CartTotal) <br /></span>
+                            <span class="text-danger" style="font-size:21px;">  Order Total : @string.Format(System.Globalization.CultureInfo.GetCultureInfo("en-US"),"{0:c}", Model.CartHeader.CartTotal) <br /></span>
                             @if (Model.CartHeader.Discount > 0)
                             {
-                                <span class="text-success"> Order Discount :  @string.Format("{0:c}", Model.CartHeader.Discount)</span>
+                                <span class="text-success"> Order Discount :  @string.Format(System.Globalization.CultureInfo.GetCultureInfo("en-US"),"{0:c}", Model.CartHeader.Discount)</span>
                             }
                         </div>
                     </div>

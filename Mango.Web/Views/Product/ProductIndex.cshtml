@@ -42,7 +42,7 @@
                             @item.CategoryName
                         </td>
                         <td>
-                            @((item.Price).ToString("c"))
+                            @string.Format(System.Globalization.CultureInfo.GetCultureInfo("en-US"), "{0:c}", item.Price)
                         </td>
                         <td>
                             <a asp-action="ProductEdit" asp-route-ProductId="@item.ProductId" class="btn btn-success">
