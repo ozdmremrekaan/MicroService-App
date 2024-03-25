@@ -1,4 +1,5 @@
 
+using Mango.Services.OrderAPI;
 using Mango.Services.OrderAPI.Data;
 using Mango.Services.OrderAPI.MapperConfig;
 using Mango.Services.OrderAPI.Service;
@@ -52,26 +53,7 @@ builder.Services.AddSwaggerGen(setup =>
     });
 
 });
-var secret = builder.Configuration.GetValue<string>("ApiSettings:Secret");
-var issuer = builder.Configuration.GetValue<string>("ApiSettings:Issuer");
-var audience = builder.Configuration.GetValue<string>("ApiSettings:Audience");
-var key = Encoding.ASCII.GetBytes(secret);
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(x =>
-{
-    x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = true,
-        ValidIssuer = issuer,
-        ValidAudience = audience,
-        ValidateAudience = true,
-    };
-});
+builder.AddAppAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.AddDbContext<AppDbContext>(option =>
 {

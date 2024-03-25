@@ -1,4 +1,5 @@
 using Mango.Services.EmailAPI.RabbitMQMessageSender;
+using Mango.Services.ShoppingCartAPI;
 using Mango.Services.ShoppingCartAPI.Data;
 using Mango.Services.ShoppingCartAPI.MapperConfig;
 using Mango.Services.ShoppingCartAPI.Service;
@@ -54,26 +55,7 @@ builder.Services.AddSwaggerGen(setup =>
     });
 
 });
-var secret = builder.Configuration.GetValue<string>("ApiSettings:Secret");
-var issuer = builder.Configuration.GetValue<string>("ApiSettings:Issuer");
-var audience = builder.Configuration.GetValue<string>("ApiSettings:Audience");
-var key = Encoding.ASCII.GetBytes(secret);
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(x =>
-{
-    x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = true,
-        ValidIssuer = issuer,
-        ValidAudience = audience,
-        ValidateAudience = true,
-    };
-});
+builder.AddAppAuthetication();
 builder.Services.AddAuthorization();
 builder.Services.AddDbContext<AppDbContext>(option =>
 {
