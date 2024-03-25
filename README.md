@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is developed using .NET Core 8 and utilizes MSSQL and RabbitMQ.
+This MicroService project is developed using .NET Core 8 and utilizes MSSQL and RabbitMQ.
 
 ## Requirements
 
@@ -48,6 +48,7 @@ This project is developed using .NET Core 8 and utilizes MSSQL and RabbitMQ.
     ```
 
 2. Run the project:
+Since this project is developed using MicroService architecture. It is needed to implemented for all microservices.
 
     ```bash
     dotnet run --project ProjectName.csproj
