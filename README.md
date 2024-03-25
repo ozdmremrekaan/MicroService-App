@@ -41,22 +41,21 @@ This MicroService project is developed using .NET Core 8 and utilizes MSSQL and 
 
 ## Build and Run
 
-1. Build the project:
+Since this project follows a Microservices architecture, each microservice should be built and run separately. Follow these general steps to run each microservice:
 
+1. Navigate to the directory of the microservice you want to run:
+    ```bash
+    cd microservice_directory
+    ```
+
+2. Build the microservice:
     ```bash
     dotnet build
     ```
 
-2. Run the project:
-Since this project is developed using MicroService architecture. It is needed to implemented for all microservices.
-
+3. Run the microservice:
     ```bash
-    dotnet run --project ProjectName.csproj
+    dotnet run --project MicroserviceName.csproj
     ```
 
-## Tests
-
-To run the tests associated with the project, execute the following command:
-
-```bash
-dotnet test
+Repeat these steps for each microservice in your project.
