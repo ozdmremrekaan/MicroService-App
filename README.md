@@ -16,7 +16,7 @@ This MicroService project is developed using .NET Core 8 and utilizes MSSQL and 
 1. Clone the project repository:
 
     ```bash
-    git clone https://github.com/username/project.git
+    git clone https://github.com/username/MicroService-App.git
     ```
 
 2. Navigate to the project directory:
